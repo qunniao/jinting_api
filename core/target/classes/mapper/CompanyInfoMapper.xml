@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhanchengdao.CompanyInfoMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.zhancheng.entity.CompanyInfo" id="companyInfoMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="intro" column="intro"/>
+        <result property="wxNumber" column="wx_number"/>
+        <result property="qqNumber" column="qq_number"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="businessJson" column="business_json"/>
+        <result property="environmentJson" column="environment_json"/>
+        <result property="certificateJson" column="certificate_json"/>
+        <result property="activitiesJson" column="activities_json"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+    id,name,intro,wx_number,qq_number,email,phone,address,business_json,environment_json,certificate_json,activities_json,gmt_modified   </sql>
+
+</mapper>

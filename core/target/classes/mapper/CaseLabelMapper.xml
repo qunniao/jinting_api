@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhancheng.dao.CaseLabelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zhancheng.entity.CaseLabel">
+        <id column="bid" property="bid" />
+        <result column="pid" property="pid" />
+        <result column="label_name" property="labelName" />
+        <result column="cover" property="cover" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+        <association property="caseLabelSet" select="getCaseLabel" column="bid"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        bid, pid, label_name, cover, is_deleted, gmt_create, gmt_modified
+    </sql>
+
+    <select id="queryList" resultMap="BaseResultMap">
+        SELECT * FROM zc_case_label zcl WHERE is_deleted = 0 AND pid = 0 ORDER BY gmt_create DESC
+    </select>
+
+    <select id="getCaseLabel" resultType="com.zhancheng.entity.CaseLabel">
+        select <include refid="Base_Column_List"/> FROM zc_case_label WHERE is_deleted = 0 AND pid = #{bid}
+    </select>
+
+    <select id="getCaseLabelInfo" resultType="com.zhancheng.entity.CaseLabel">
+        select <include refid="Base_Column_List"/> FROM zc_case_label WHERE is_deleted = 0 AND bid = #{tid}
+    </select>
+
+    <select id="queryInfo" resultType="com.zhancheng.entity.CaseLabel">
+        SELECT zcl1.*, zcl2.label_name superiorLabelName
+        FROM zc_case_label zcl1
+		LEFT JOIN zc_case_label zcl2
+		ON zcl1.pid = zcl2.bid AND zcl2.is_deleted = 0
+		WHERE zcl1.is_deleted = 0 AND zcl1.bid = #{bid}
+    </select>
+
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhancheng.dao.CaseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zhancheng.entity.Case">
+        <id column="cid" property="cid"/>
+        <result column="sid" property="sid"/>
+        <result column="tid" property="tid"/>
+        <result column="name" property="name"/>
+        <result column="min_price" property="minPrice"/>
+        <result column="max_price" property="maxPrice"/>
+        <result column="content" property="content"/>
+        <result column="cover" property="cover"/>
+        <result column="video" property="video"/>
+        <result column="mobile_detail" property="mobileDetail"/>
+        <result column="address" property="address"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="is_recommend" property="recommend"/>
+        <association property="caseLabels" column="tid" select="com.zhancheng.dao.CaseLabelMapper.getCaseLabelInfo"/>
+        <collection property="caseAttrs" column="cid" select="com.zhancheng.dao.CaseAttrMapper.getInfo"/>
+        <collection property="caseImageList" column="cid" select="com.zhancheng.dao.CaseImageMapper.queryInfo"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        cid, sid, tid, name, min_price, max_price, content, cover,video, address, is_recommend, mobile_detail, is_deleted, gmt_create, gmt_modified
+    </sql>
+
+    <select id="queryList" resultMap="BaseResultMap">
+       select * FROM zc_case zc
+        WHERE zc.is_deleted = 0
+        ORDER BY zc.gmt_create DESC
+    </select>
+
+    <select id="queryInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        FROM zc_case zc
+        WHERE zc.is_deleted = 0 AND zc.cid = #{cid}
+    </select>
+
+</mapper>

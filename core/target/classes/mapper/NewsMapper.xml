@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhancheng.dao.NewsMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.zhancheng.entity.News" id="newsMap">
+        <result property="id" column="id"/>
+        <result property="typeId" column="type_id"/>
+        <result property="title" column="title"/>
+        <result property="cover" column="cover"/>
+        <result property="content" column="content"/>
+        <result property="sort" column="sort"/>
+        <result property="watchNum" column="watch_num"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        zn.id, type_id, title, cover, zn.sort, watch_num, is_deleted, gmt_create, gmt_modified
+    </sql>
+    <select id="queryList" resultType="com.zhancheng.vo.NewsListVo">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        znt.name typeName
+        FROM
+        zc_news zn
+        LEFT JOIN zc_news_type znt
+        ON zn.type_id = znt.id
+        WHERE
+        zn.is_deleted = 0
+        <if test="typeId != null">
+            AND  znt.id = #{typeId}
+        </if>
+        ORDER BY
+        zn.sort DESC,
+        zn.gmt_create DESC
+    </select>
+</mapper>

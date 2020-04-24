@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: core
+# 日志配置
+logging:
+  config: classpath:logback-spring.xml
